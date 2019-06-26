@@ -15,37 +15,28 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     var newViewController : firsstViewController?
     var searchViewController : searchViewController?
     var label : String?
-     var managed : NSManagedObjectContext!
+    var managed : NSManagedObjectContext!
     var array :[Todos] = []
-    
-    
+    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
     
     @IBAction func Add(_ sender: Any) {
-        
-        
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         newViewController = storyBoard.instantiateViewController(withIdentifier: "firsstViewController") as? firsstViewController
         self.navigationController?.pushViewController(newViewController!, animated: true)
         self.tableview.reloadData()
     }
     
     @IBAction func search(_ sender: Any) {
-        let stroyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         searchViewController = stroyboard.instantiateViewController(withIdentifier: "searchViewController") as? searchViewController
         self.navigationController?.pushViewController(searchViewController!, animated: true)
-        
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return array.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        // Configure the cell...
         cell.backgroundColor = UIColor.orange
         cell.textLabel?.text = array[indexPath.row].title
         return cell
@@ -56,8 +47,6 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
             compl(true)
         }
         act.backgroundColor = .green
-        
-        
         return UISwipeActionsConfiguration(actions: [act])
     }
     
@@ -72,12 +61,10 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
             do{
             try managedcont.save()
                 self.array = try managedcont.fetch(Todos.fetchRequest())
-
             }
             catch{
                 
             }
-            
             self.tableview.reloadData()
             completion(true)
         }
@@ -87,23 +74,16 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       tableview.layer.borderWidth = 0
+        tableview.layer.borderWidth = 0
         tableview.layer.borderColor = UIColor.clear.cgColor
-    
         self.navigationController?.toolbar.layer.borderColor = UIColor.clear.cgColor
-        
-        // Do any additional setup after loading the view, typically from a nib.
     }
-   
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     override func viewWillAppear(_ animated: Bool) {
         //fetch
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-       do {
+        do {
             array = try context.fetch(Todos.fetchRequest())
         }
         catch{
