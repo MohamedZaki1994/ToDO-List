@@ -26,7 +26,7 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     }
     
     @IBAction func search(_ sender: Any) {
-        searchViewController = stroyboard.instantiateViewController(withIdentifier: "searchViewController") as? searchViewController
+        searchViewController = storyBoard.instantiateViewController(withIdentifier: "searchViewController") as? searchViewController
         self.navigationController?.pushViewController(searchViewController!, animated: true)
     }
     
